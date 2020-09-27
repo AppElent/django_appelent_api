@@ -14,6 +14,7 @@ django-rest-swagger = "*"
 drf-yasg = "*"
 django-heroku = "*"
 python-dotenv = "*"
+cryptography = "*"
 
 [requires]
 python_version = "3.8"

@@ -24,15 +24,19 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
+environment = "DEV" if os.getenv("ENVIRONMENT") is None else os.getenv("ENVIRONMENT")
+print("Starting up environment " + environment)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0x)@x_-&hb6glgkbf5i!#9qnyl0%z264@ch439$r^yoz2&%-k8'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if environment == "PRODUCTION" else True
+print("Debug setting: " + str(DEBUG))
 
 ALLOWED_HOSTS = []
 
