@@ -24,7 +24,7 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
-environment = "DEV" if os.getenv("ENVIRONMENT") is None else os.getenv("ENVIRONMENT")
+environment = ("LOCAL" if os.getenv("ENVIRONMENT") is None else os.getenv("ENVIRONMENT")).upper()
 print("Starting up environment " + environment)
 
 
@@ -37,6 +37,11 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if environment == "PRODUCTION" else True
 print("Debug setting: " + str(DEBUG))
+
+# Redirect to HTTPS on non-dev websites
+if environment != "LOCAL":
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = []
 
@@ -66,6 +71,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'crum.CurrentRequestUserMiddleware',
 ]
 
 REST_FRAMEWORK = {
