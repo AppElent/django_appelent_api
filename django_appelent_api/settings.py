@@ -43,7 +43,12 @@ if environment != "LOCAL":
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'appelent-api-dev.herokuapp.com',
+    'appelent-api-staging.herokuapp.com',
+    'appelent-api.herokuapp.com',
+    'administratie.appelent.com',
+]
 
 
 # Application definition
