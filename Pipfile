@@ -15,6 +15,7 @@ drf-yasg = "*"
 django-heroku = "*"
 python-dotenv = "*"
 cryptography = "*"
+django-crum = "*"
 
 [requires]
 python_version = "3.8"
