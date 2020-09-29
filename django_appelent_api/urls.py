@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from django.conf.urls import url
+from django.views.generic.base import RedirectView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -32,7 +34,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    #get the OPEN-API specification in either JSON or YAML
+    # Get the OPEN-API specification in either JSON or YAML
     re_path(r'^docs(?P<format>\.json|\.yaml)$',
             schema_view.without_ui(cache_timeout=0), name='schema-json'), 
     # Swagger UI
@@ -41,6 +43,10 @@ urlpatterns = [
     #ReDoc UI
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
          name='schema-redoc'), 
+    # Admin panel
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls'))
+    # All API routes
+    path('api/', include('api.urls')),
+    # Redirect empty to /api
+    url(r'^$', RedirectView.as_view(url='/api/')),
 ]
