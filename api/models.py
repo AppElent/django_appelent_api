@@ -1,8 +1,10 @@
+import os
 from django.db import models
 from django.contrib.auth import get_user_model
 from crum import get_current_user
 from .modules.encryption import encrypt_message, decrypt_message
 User = get_user_model()
+key = os.getenv("SECRET_KEY")
 
 class Event(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
@@ -30,7 +32,7 @@ class OauthProvider(models.Model):
         #if not self.id:
             # Object is a new instance
             
-        self.credentials = encrypt_message(self.credentials, '<keyhere>')
+        self.credentials = encrypt_message(self.credentials, key)
         return super().save(*args, **kwargs)
 
     def __str__(self):

@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 django = "*"
-djangorestframework = "*"
 pylint = "*"
 gunicorn = "*"
 django-rest-swagger = "*"
@@ -16,6 +15,13 @@ django-heroku = "*"
 python-dotenv = "*"
 cryptography = "*"
 django-crum = "*"
+packaging = "*"
+djangorestframework = "~=3.11.1"
+djangorestframework-xml = "*"
+djangorestframework-yaml = "*"
+djangorestframework-csv = "*"
+markdown = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.8"
