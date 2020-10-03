@@ -22,6 +22,9 @@ djangorestframework-yaml = "*"
 djangorestframework-csv = "*"
 markdown = "*"
 django-filter = "*"
+requests = "*"
+python-tado = "*"
+authlib = "*"
 
 [requires]
 python_version = "3.8"
