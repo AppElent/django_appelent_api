@@ -8,7 +8,7 @@ class ApiConfig(AppConfig):
     def ready(self):
         try:
             import api.receivers
-            #from .singletons import oauth, register_providers
-            #register_providers(oauth)
+            from .singletons import oauth, register_providers
+            register_providers(oauth)
         except expression as identifier:
             pass
