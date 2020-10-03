@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Django cache and logging
+cache/
+debug.log
+
 #environment file
 .env
 
