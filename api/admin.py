@@ -14,3 +14,4 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Meterstand)
 admin.site.register(OauthProvider)
 admin.site.register(OAuth2Token)
+admin.site.register(TestModel)

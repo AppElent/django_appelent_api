@@ -7,6 +7,7 @@ from .Event import Event
 from .Meterstand import Meterstand
 from .OauthProvider import OauthProvider
 from .OAuth2Token import OAuth2Token
+from .TestModel import TestModel
 
 # for file in os.listdir(os.path.dirname(__file__)):
 #     mod_name = file[:-3]   # strip .py at the end
