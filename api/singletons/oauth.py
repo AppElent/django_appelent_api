@@ -32,10 +32,11 @@ def register_provider(oauth, provider):
         oauth_sessions._sessions[provider.name] = OAuth2Session(provider.client_id, provider.client_secret, scope=eval(provider.client_kwargs)['scope'])
         oauth_sessions._endpoints[provider.name] = provider.access_token_url
     else:
+        print('registreren met', provider.client_id, provider.client_secret)
         oauth.register(
             name=provider.name,
             client_id=provider.client_id,
-            client_secret=provider.client_secret_decrypted,
+            client_secret=provider.client_secret,
             access_token_url=provider.access_token_url,
             access_token_params=provider.access_token_params,
             authorize_url=provider.authorize_url,

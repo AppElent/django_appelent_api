@@ -6,7 +6,7 @@ from ..singletons import oauth, check_registered
 
 class EnelogicRequest(viewsets.ViewSet):
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         print('entering dispatch')
         registered = check_registered(oauth, 'enelogic')
         print(registered)

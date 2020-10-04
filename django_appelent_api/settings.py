@@ -35,6 +35,9 @@ print("Starting up environment " + environment)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+# Field encryption key
+FIELD_ENCRYPTION_KEY = os.getenv("SECRET_KEY")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if environment == "PRODUCTION" else True
 print("Debug setting: " + str(DEBUG))

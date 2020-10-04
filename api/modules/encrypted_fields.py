@@ -4,7 +4,6 @@ from django.conf import settings
 from cryptography.fernet import Fernet
 import os
 appkey = settings.FIELD_ENCRYPTION_KEY if hasattr(settings, 'FIELD_ENCRYPTION_KEY') else os.getenv('SECRET_KEY')
-print('app encryption key', appkey)
 
 def encrypt_message(message, key):
     """
@@ -24,22 +23,14 @@ def decrypt_message(encrypted_message, key):
 
     return decrypted_message.decode('utf-8')
 
-class EncryptedText(models.TextField):
-    description = "Encrypts a field before saving and decrypts upon retrieval"
-
-    def from_db_value(self, value, expression, connection):
-        print('from db value')
-        return decrypt_message(value, key)
-
-    def to_python(self, value):
-        print('to python')
-        try:
-            return encrypt_message(value, key)
-        except TypeError:
-            return value
-
-
 class EncryptedMixin(object):
+
+    _ENCRYPTED_PREFIX = 'encrypted_'
+
+    def remove_prefix(self, text, prefix):
+        if text.startswith(prefix):
+            return text[len(prefix):]
+        return text  # or whatever
 
     def __init__(self, *args, **kwargs):
         self.decrypt_on_get = kwargs.pop('decrypt_on_get', False) # pop the custom kwarg
@@ -51,7 +42,7 @@ class EncryptedMixin(object):
             return value
         try:
             if self.decrypt_on_get == True:
-                value = decrypt_message(value, self.key)
+                value = decrypt_message(self.remove_prefix(value, self._ENCRYPTED_PREFIX), self.key)
         except:
             pass
 
@@ -66,8 +57,10 @@ class EncryptedMixin(object):
 
         if value is None:
             return value
+        if value.startswith(self._ENCRYPTED_PREFIX):
+            return value
         # decode the encrypted value to a unicode string, else this breaks in pgsql
-        return (encrypt_message(str(value), self.key))
+        return (self._ENCRYPTED_PREFIX + encrypt_message(str(value), self.key))
 
     def get_internal_type(self):
         return "TextField"
