@@ -43,6 +43,8 @@ urlpatterns = [
     #ReDoc UI
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
          name='schema-redoc'), 
+    # Admin documentation
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
     # Admin panel
     path('admin/', admin.site.urls),
     # All API routes

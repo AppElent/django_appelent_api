@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, viewsets, mixins
 from ..singletons import oauth
 from ..models import OAuth2Token
+from ..serializers import Test1Serializer
 from PyTado.interface import Tado
 from django.core.cache import caches
 defaultcache = caches['default']
@@ -54,8 +55,9 @@ class TadoZone(TadoRequest):
 
 class TadoZoneOverlay(TadoRequest):
     """
-    Get Tado zones
+    Set Tado ZoneOverlay
     """
+    
     def list(self, request):
         t = self.get_client(request)
         return Response(t.getZones())
@@ -65,6 +67,9 @@ class TadoZoneOverlay(TadoRequest):
         zones = t.getZones()
         zone = next((x for x in zones if x['id'] == int(pk)), {})
         return Response(zone)
+    
+    def create(self, request):
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def update(self, request, pk, format=None):
         t = self.get_client(request)

@@ -55,6 +55,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -65,7 +66,8 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'drf_yasg',
     'api.apps.ApiConfig',
-    'django_filters',
+    'users',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -101,6 +103,9 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
+
+# Setting custom user model
+AUTH_USER_MODEL = 'users.User'
 
 ROOT_URLCONF = 'django_appelent_api.urls'
 
