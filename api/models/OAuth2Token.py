@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 from django.contrib.auth import get_user_model
 from crum import get_current_user
-from ..modules.encryption import encrypt_message, decrypt_message
+from ..modules.encrypted_fields import EncryptedTextField
 User = get_user_model()
 import os
 key = os.getenv("SECRET_KEY")
@@ -25,7 +25,7 @@ class OAuth2Token(models.Model):
     
     name = models.CharField(max_length=40)
     token_type = models.CharField(max_length=40)
-    access_token = models.CharField(max_length=200)
+    access_token = EncryptedTextField(decrypt_on_get=True)
     refresh_token = models.CharField(max_length=200, blank=True, null=True)
     expires_at = models.PositiveIntegerField(blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=get_current_user)
@@ -45,18 +45,6 @@ class OAuth2Token(models.Model):
     def expired(self):
         #return self.expires_at < pendulum.now()
         return False
-
-    def save(self, *args, **kwargs):
-        #if not self.id:
-            # Object is a new instance
-            
-        self.access_token = encrypt_message(self.access_token, key)
-        return super().save(*args, **kwargs)
-
-    @property
-    def access_token_decrypted(self):
-        # decrypt self.pin and return
-        return decrypt_message(self.access_token, key)
 
     def update(self, token):
         self.access_token = token["access_token"]
