@@ -1,8 +1,9 @@
 from rest_framework import viewsets
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from ..serializers import EventSerializer
 from ..models import Event
+from ..permissions import IsOwner
 
 class EventViewSet(viewsets.ModelViewSet):
     """
@@ -10,8 +11,7 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     queryset = Event.objects.all()
     serializer_class = EventSerializer 
-    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwner]
     filterset_fields = ('category', 'application', 'severity')
     ordering_fields = ['category', 'severity']
 
@@ -20,5 +20,7 @@ class EventViewSet(viewsets.ModelViewSet):
         This view should return a list of all the purchases
         for the currently authenticated user.
         """
+        if getattr(self, 'swagger_fake_view', False):
+            return None
         user = self.request.user
         return Event.objects.filter(user=user)

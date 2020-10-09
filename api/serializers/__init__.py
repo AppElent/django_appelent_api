@@ -8,6 +8,7 @@ from .EventSerializer import EventSerializer
 from .MeterstandSerializer import MeterstandSerializer
 from .OauthProviderSerializer import OauthProviderSerializer
 from .OAuth2TokenSerializer import OAuth2TokenSerializer
+from .Test1Serializer import Test1Serializer
 
 # for file in os.listdir(os.path.dirname(__file__)):
 #     mod_name = file[:-3]   # strip .py at the end
