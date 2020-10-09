@@ -20,15 +20,19 @@ from django.views.generic.base import RedirectView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+api_info = openapi.Info(
+   title="App-Elent API",
+   default_version='v1',
+)
 schema_view = get_schema_view(
-    openapi.Info(
-        title="App-Elent API",
-        default_version='v1',
-        description="Welcome to the world of App-Elent",
-        terms_of_service="https://www.jaseci.org",
-        contact=openapi.Contact(email="jason@jaseci.org"),
-        license=openapi.License(name="Awesome IP"),
-    ),
+    # openapi.Info(
+    #     title="App-Elent API",
+    #     default_version='v1',
+    #     description="Welcome to the world of App-Elent",
+    #     terms_of_service="https://www.jaseci.org",
+    #     contact=openapi.Contact(email="jason@jaseci.org"),
+    #     license=openapi.License(name="Awesome IP"),
+    # ),
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
@@ -49,6 +53,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # All API routes
     path('api/', include('api.urls')),
+    # Add browsable API login/logout views
+    path('api-auth/', include('rest_framework.urls')),
     # Redirect empty to /api
     url(r'^$', RedirectView.as_view(url='/api/')),
 ]

@@ -26,6 +26,7 @@ requests = "*"
 python-tado = "*"
 authlib = "*"
 docutils = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.8"

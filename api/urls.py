@@ -4,7 +4,12 @@ from rest_framework.authtoken import views
 from .views import *
 from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter()
+class OptionalSlashRouter(DefaultRouter):      
+    def __init__(self, *args, **kwargs):         
+        super(DefaultRouter, self).__init__(*args, **kwargs)         
+        self.trailing_slash = '/?' 
+
+router = OptionalSlashRouter('/?')
 router.register('events', EventViewSet, basename='events')
 router.register('oauthproviders', OauthProviderViewSet, basename='oauthproviders')
 router.register('meterstanden', MeterstandViewSet, basename='meterstanden')
@@ -19,8 +24,6 @@ urlpatterns = [
     path('test1/', test1),
     path('test2/<str:var1>/<int:var2>/', test2),
     path('test3/', TestView.as_view()),
-    #path('tado/zoneoverlay/', TadoZoneOverlay.as_view()),
-    #path('tado/zoneoverlay/<int:pk>/', TadoZoneOverlay.as_view()),
     url(r'^token/', views.obtain_auth_token),
     path('oauth/<str:name>/authorize', authorize),
     path('oauth/<str:name>/token', save_access_token),
