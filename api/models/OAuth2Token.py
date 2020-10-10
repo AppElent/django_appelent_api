@@ -63,4 +63,4 @@ class OAuth2Token(models.Model):
 
     def __str__(self):
         expires_string = "" if self.expires_at is None else self.expires_at_string
-        return self.name + " - " + self.user.username + " - Expires: " + expires_string
+        return self.name + " - " + self.user.email + " - Expires: " + expires_string

@@ -39,7 +39,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 FIELD_ENCRYPTION_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if environment == "PRODUCTION" else True
+DEBUG = False if (environment == "PRODUCTION" and os.getenv('DEBUG') != '1') else True
 print("Debug setting: " + str(DEBUG))
 
 # Redirect to HTTPS on non-dev websites

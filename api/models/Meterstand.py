@@ -19,4 +19,4 @@ class Meterstand(models.Model):
         unique_together = ('datetime', 'user',)
 
     def __str__(self):
-        return self.user.username + " - " + str(self.datetime)
+        return self.user.email + " - " + str(self.datetime)
