@@ -27,7 +27,9 @@ class MeterstandViewSet(viewsets.ModelViewSet):
         many = True if isinstance(request.data, list) else False
         serializer = MeterstandSerializer(data=request.data, many=many)
         if serializer.is_valid():
-            serializer.save()
+            for meterstand in request.data:
+                Meterstand.objects.update_or_create(user=request.user, datetime=meterstand['datetime'], defaults=meterstand)
+            #serializer.save()
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
