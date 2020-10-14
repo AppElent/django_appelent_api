@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework import status, viewsets
 from ..singletons import oauth
 from ..models import OAuth2Token
@@ -16,7 +17,7 @@ class TadoRequest(viewsets.GenericViewSet):
     _URL = ''
 
     def get_client(self, request):
-        key = 'tado_' + request.user.username
+        key = 'tado_' + request.user.email
         t = defaultcache.get(key)
         if not t:
             token = OAuth2Token.objects.get(user=request.user, name='tado')
@@ -55,33 +56,47 @@ class TadoZone(TadoRequest):
         zone = next((x for x in zones if x['id'] == int(pk)), {})
         return Response(zone)
 
-
-class TadoZoneOverlay(TadoRequest):
-    """
-    Set Tado ZoneOverlay
-    """
-    serializer_class = Test1Serializer
-    _URL = 'zones'
-   
-    def list(self, request):
-        data = self.get_queryset()
-        return Response(data)
-
-    def retrieve(self, request, pk, format=None):
-        t = self.get_queryset()
-        zone = next((x for x in zones if x['id'] == int(pk)), {})
-        return Response(zone)
-    
-    def create(self, request):
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def update(self, request, pk, format=None):
-        t = self.get_client(request)
-        #t.setZoneOverlay(pk)
-        return Response(serializer.data)
-
-    def destroy(self, request, pk, format=None):
+    @action(detail=True, methods=['delete'])
+    def overlay(self, request, pk=None, format=None):
         t = self.get_client(request)
         t.resetZoneOverlay(pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=['delete'])
+    def overlays(self, request, pk=None, format=None):
+        t = self.get_client(request)
+        zones = t.getZones()
+        for zone in zones:
+            t.resetZoneOverlay(zone['id'])
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# class TadoZoneOverlay(TadoRequest):
+#     """
+#     Set Tado ZoneOverlay
+#     """
+#     serializer_class = Test1Serializer
+#     _URL = 'zones'
+   
+#     def list(self, request):
+#         data = self.get_queryset()
+#         return Response(data)
+
+#     def retrieve(self, request, pk, format=None):
+#         t = self.get_queryset()
+#         zone = next((x for x in zones if x['id'] == int(pk)), {})
+#         return Response(zone)
+    
+#     def create(self, request):
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+#     def update(self, request, pk, format=None):
+#         t = self.get_client(request)
+#         #t.setZoneOverlay(pk)
+#         return Response(serializer.data)
+
+#     def destroy(self, request, pk, format=None):
+#         t = self.get_client(request)
+#         t.resetZoneOverlay(pk)
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
