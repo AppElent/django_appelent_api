@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from datetime import datetime, timedelta
+from django.utils import timezone
 from ...models import Meterstand
 
 
@@ -10,4 +11,4 @@ class Command(BaseCommand):
     #     parser.add_argument('--mode', type=str, help="Mode")
 
     def handle(self, *args, **options):
-        Meterstand.objects.filter(datetime=datetime.now()-timedelta(days=7)).delete()
+        Meterstand.objects.filter(datetime__lte=timezone.now()-timedelta(days=10)).delete()
