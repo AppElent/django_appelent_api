@@ -15,7 +15,6 @@ router.register('oauthproviders', OauthProviderViewSet, basename='oauthproviders
 router.register('meterstanden', MeterstandViewSet, basename='meterstanden')
 router.register('oauthclients', OAuth2TokenViewSet, basename='oauthclients')
 router.register('tado/zones', TadoZone, basename='tado-zones')
-router.register('tado/zoneoverlay', TadoZoneOverlay, basename='tado-zoneoverlay')
 router.register('enelogic/buildings', EnelogicBuilding, basename='enelogic-buildings')
 router.register('solaredge/sites', SolarEdgeSite, basename='solaredge-sites')
 
