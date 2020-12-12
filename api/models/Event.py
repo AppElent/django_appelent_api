@@ -14,4 +14,4 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.application + " - " + str(self.severity) + " - " + self.value 
+        return self.value 
