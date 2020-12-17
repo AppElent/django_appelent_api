@@ -37,6 +37,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     email = models.EmailField(unique=True, blank=False)
     username = None
+    firebase_uid = models.CharField(max_length=200, blank=True, null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
