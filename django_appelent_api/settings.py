@@ -52,6 +52,7 @@ ALLOWED_HOSTS = [
     'appelent-api-staging.herokuapp.com',
     'appelent-api.herokuapp.com',
     'administratie.appelent.com',
+    'localhost:3000'
 ]
 
 # Application definition
@@ -70,10 +71,12 @@ INSTALLED_APPS = [
     'drf_yasg',
     'api.apps.ApiConfig',
     'users',
-    'django_filters'
+    'django_filters',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -89,6 +92,7 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'api.authentication.FirebaseAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -117,6 +121,15 @@ REST_FRAMEWORK = {
 
 LOGIN_URL = 'rest_framework:login'
 LOGOUT_URL = 'rest_framework:logout'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000"
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https?://([a-z0-9]+[.])*appelent[.]com",
+    r"^https?://appelent-([a-z0-9]+[.])*web[.]app",
+]
 
 SWAGGER_SETTINGS = {
    #'DEFAULT_INFO': './urls.py',
