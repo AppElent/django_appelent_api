@@ -93,7 +93,8 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'api.authentication.FirebaseAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'api.authentication.TokenAuthSupportQueryString',
+        #'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],

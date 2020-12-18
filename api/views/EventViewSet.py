@@ -1,6 +1,5 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from ..serializers import EventSerializer
 from ..models import Event
 from ..permissions import IsOwner
