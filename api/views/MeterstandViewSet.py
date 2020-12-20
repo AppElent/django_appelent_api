@@ -50,7 +50,7 @@ class MeterstandViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='month/(?P<month>\d{4}-\d{2})/$')
     def month(self, request, month, *args, **kwargs):
         datearray = month.split('-')
-        meterstanden = Meterstand.objects.filter(user=self.request.user, datetime__year=datearray[0], datetime__month=datearray[1])
+        meterstanden = Meterstand.objects.filter(user=self.request.user, datetime__year=datearray[0], datetime__month=datearray[1], datetime__hour=0, datetime__minute=0)
         meterstanden_data = self.get_serializer_class()(meterstanden, many=True)
         return Response(meterstanden_data.data)
 
