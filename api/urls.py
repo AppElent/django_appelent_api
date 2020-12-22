@@ -25,5 +25,7 @@ urlpatterns = [
     path('test3/', TestView.as_view()),
     url(r'^token/', views.obtain_auth_token),
     path('oauth/<str:name>/authorize', authorize),
+    path('oauth/<str:name>/authorizationurl', get_authorization_url),
     path('oauth/<str:name>/token', save_access_token),
+    path('oauth/<str:name>/refresh', refresh_access_token),
 ]

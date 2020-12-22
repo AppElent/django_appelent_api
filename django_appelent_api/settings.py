@@ -27,6 +27,8 @@ if os.path.isfile(dotenv_file):
 
 environment = ("LOCAL" if os.getenv("ENVIRONMENT") is None else os.getenv("ENVIRONMENT")).upper()
 print("Starting up environment " + environment)
+if environment == 'LOCAL':
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 
 # Quick-start development settings - unsuitable for production
