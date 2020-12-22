@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-from authlib.integrations.django_client import OAuth
 from django.core.cache import caches
 
 class ApiConfig(AppConfig):

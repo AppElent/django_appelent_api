@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status, viewsets
-from ..singletons import oauth
 from ..models import OAuth2Token
 from ..serializers import Test1Serializer
 from PyTado.interface import Tado

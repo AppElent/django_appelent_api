@@ -43,7 +43,8 @@ class OAuth2Token(models.Model):
 
     @property
     def expired(self):
-        #return self.expires_at < pendulum.now()
+        if self.expires_at:
+            return datetime.fromtimestamp(self.expires_at) < datetime.now()
         return False
 
     def update(self, token):

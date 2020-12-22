@@ -24,11 +24,11 @@ markdown = "*"
 django-filter = "*"
 requests = "*"
 python-tado = "*"
-authlib = "*"
 docutils = "*"
 python-dateutil = "*"
 firebase-admin = "*"
 django-cors-headers = "*"
+requests-oauthlib = "*"
 
 [requires]
 python_version = "3.8"
