@@ -18,7 +18,7 @@ class OauthProvider(models.Model):
     client_kwargs = models.TextField(null=True, blank=True)
     default_scope = models.TextField(null=True, blank=True)
     redirect_uri = models.TextField(null=True, blank=True)
-    flow = models.TextField(null=True, blank=True)
+    flow = models.TextField(null=True, blank=True, choices=[('password', 'password'), ('authorization_code', 'authorization_code')])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

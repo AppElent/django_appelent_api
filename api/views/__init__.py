@@ -12,6 +12,7 @@ from .OAuth2TokenViewSet import OAuth2TokenViewSet
 from .Enelogic import *
 from .SolarEdge import *
 from .Oauth import *
+from .Pushover import *
 from .tests import *
 
 # for file in os.listdir(os.path.dirname(__file__)):

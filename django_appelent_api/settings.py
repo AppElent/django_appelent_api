@@ -29,6 +29,10 @@ environment = ("LOCAL" if os.getenv("ENVIRONMENT") is None else os.getenv("ENVIR
 print("Starting up environment " + environment)
 if environment == 'LOCAL':
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    #DEBUG_PROPAGATE_EXCEPTIONS = True
+
+# Ignore warning about oauth scopes
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 
 # Quick-start development settings - unsuitable for production

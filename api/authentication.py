@@ -6,7 +6,9 @@ from firebase_admin import credentials, auth
 import os
 import json 
 
-cred = credentials.Certificate(json.loads(os.getenv("FIREBASE_CRED")))
+saved_credential = os.getenv("FIREBASE_CRED")
+#print(saved_credential)
+cred = credentials.Certificate(json.loads(saved_credential))
 firebase_admin.initialize_app(cred)
 print('Firebase loaded')
 
@@ -74,7 +76,7 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
                 user.save()
         except User.DoesNotExist:
             try:
-                user = User.objects.create_user(email=decoded["email"])
+                user = User.objects.create_user(email=decoded["email"], firebase_uid=decoded["uid"])
             except:
                 raise exceptions.AuthenticationFailed('User does not exist and cannot be created')
 

@@ -1,11 +1,13 @@
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
+from django.dispatch import Signal
 from crum import get_current_user
 from ..modules.encrypted_fields import EncryptedTextField
 User = get_user_model()
 import os
 key = os.getenv("SECRET_KEY")
+token_saved = Signal()
 
 class OAuth2TokenManager(models.Manager):
     def update_token(self, name, token, refresh_token=None, access_token=None):
@@ -25,9 +27,11 @@ class OAuth2Token(models.Model):
     
     name = models.CharField(max_length=40)
     token_type = models.CharField(max_length=40)
-    access_token = EncryptedTextField(decrypt_on_get=True)
+    access_token = EncryptedTextField(decrypt_on_get=True, blank=True, null=True)
     refresh_token = models.CharField(max_length=200, blank=True, null=True)
     expires_at = models.PositiveIntegerField(blank=True, null=True)
+    username = EncryptedTextField(decrypt_on_get=True, blank=True, null=True, max_length=200)
+    password = EncryptedTextField(decrypt_on_get=True, blank=True, null=True, max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=get_current_user)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -44,7 +48,7 @@ class OAuth2Token(models.Model):
     @property
     def expired(self):
         if self.expires_at:
-            return datetime.fromtimestamp(self.expires_at) < datetime.now()
+            return datetime.fromtimestamp(self.expires_at) < (datetime.now() + timedelta(0, 60))
         return False
 
     def update(self, token):
@@ -65,3 +69,8 @@ class OAuth2Token(models.Model):
     def __str__(self):
         expires_string = "" if self.expires_at is None else self.expires_at_string
         return self.name + " - " + self.user.email + " - Expires: " + expires_string
+
+    # def save(self, *args, **kwargs):
+    #     super(OAuth2Token, self).save(*args, **kwargs)
+    #     # model and m2m fields are updated now
+    #     token_saved.send(sender=User, *args, **kwargs)
