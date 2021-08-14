@@ -1,7 +1,7 @@
 #from .encryption import encrypt_message, decrypt_message, generate_key
 #key = generate_key()
 from django.core.cache import cache as djangocache
-import json
+
 
 class Cache():
 
@@ -33,16 +33,20 @@ class Cache():
         allkeys = allkeys.split(self.delimiter)
         if key not in allkeys:
             allkeys.append(key)
+            allkeys = self.delimiter.join(allkeys)
             djangocache.set('allkeys', allkeys)
 
     def delete_key(self, key, **kwargs):
         allkeys = djangocache.get('allkeys', default='')
         allkeys = allkeys.split(self.delimiter)
-        
+
         try:
             allkeys.remove(key)
+            allkeys = self.delimiter.join(allkeys)
+            djangocache.set('allkeys', allkeys)
         except:
             pass
+
 
     def get(self, key, **kwargs):
         kwargs['key'] = key
