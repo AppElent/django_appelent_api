@@ -1,10 +1,10 @@
 from rest_framework import authentication, exceptions, HTTP_HEADER_ENCODING
 from django.contrib.auth import get_user_model
-User = get_user_model()
 import firebase_admin
 from firebase_admin import credentials, auth
 import os
 import json 
+User = get_user_model()
 
 saved_credential = os.getenv("FIREBASE_CRED")
 #print(saved_credential)
