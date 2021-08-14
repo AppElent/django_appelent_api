@@ -25,4 +25,4 @@ def token_deleted(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Oauth2State, dispatch_uid="save_oauth_state")
 def state_saved(sender, instance, **kwargs):
-    cache.set_global(instance.user.id, 'tokens', instance.name, instance)
+    cache.set('tokens', instance)

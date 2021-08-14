@@ -1,5 +1,7 @@
 #from .encryption import encrypt_message, decrypt_message, generate_key
 #key = generate_key()
+from django.core.cache import cache as djangocache
+import json
 
 class Cache():
 
@@ -7,112 +9,58 @@ class Cache():
         'global': {}
     }
 
-    #kwargs userid en category
-    def get(self, **kwargs):
+    def get_cachekey(self, **kwargs):
         key = kwargs.get('key')
         userid = kwargs.get('userid')
         category = kwargs.get('category')
 
         if not userid and key:
-            return self._cache['global'][key]
+            cachekey = key
         elif userid and not key and not category:
-            return self._cache.get(userid)
+            cachekey = str(userid)
         elif userid and category and not key:
-            try:
-                return self._cache[userid][category]
-            except:
-                return None
+            cachekey = str(userid) + '.' + category
         elif userid and category and key:
-            try:
-                return self._cache[userid][category][key]
-            except:
-                return None
+            cachekey = str(userid) + '.' + category + '.' + key
         else:
             print('Key niet gevonden (key, userid, category)', key, userid, category)
-
-    # def get_category(self, userid, category):
-    #     try:
-    #         value = self._cache[userid][category]
-    #         return value
-    #     except:
-    #         return None
-
-    # def get_user(self, userid):
-    #     try:
-    #         value = self._cache[userid]
-    #         return value
-    #     except:
-    #         return None
-
-    def set(self, key, value, **kwargs):
-        userid = kwargs.get('userid')
-        category = kwargs.get('category')
-
-        if not userid:
-            self._cache['global'][key] = value
-        elif category:
-            try:
-                self._cache[userid][category][key] = value
-            except:
-                try:
-                    self._cache[userid][category] = {key: value}
-                except:
-                    self._cache[userid] = {category: { key: value }}
-        else:
-            print('Geen route gevonden (key, value, userid, category)', key, value, userid, category)
-
-    def delete(self, **kwargs):
-        key = kwargs.get('key')
-        userid = kwargs.get('userid')
-        category = kwargs.get('category')
-
-        if not userid and key:
-            self._cache['global'].pop(key)
-        elif userid and category and key:
-            try:
-                self._cache[userid][category].pop(key, None)
-            except:
-                print('Bestond al niet')
-        elif userid and category:
-            try:
-                self._cache[userid].pop(category, None)
-            except:
-                print('Bestond al niet')
-        elif userid:
-            self._cache.pop(userid, None)
-        else:
-            print('Geen route gevonden (key, userid, category)', key, userid, category)
+        return cachekey
     
-    # def set_global(self, key, value):
-    #     self._cache['global'][key] = value
+    delimiter = '~~~'
 
-    # def get_global(self, key):
-    #     try:
-    #         return self._cache['global'][key]
-    #     except:
-    #         return None
+    def add_key(self, key, **kwargs):
+        allkeys = djangocache.get('allkeys', default='')
+        allkeys = allkeys.split(self.delimiter)
+        if key not in allkeys:
+            allkeys.append(key)
+            djangocache.set('allkeys', allkeys)
 
-    # def delete_global(self, key):
-    #     try:
-    #         self._cache['global'].pop(key, None)
-    #     except:
-    #         pass
+    def delete_key(self, key, **kwargs):
+        allkeys = djangocache.get('allkeys', default='')
+        allkeys = allkeys.split(self.delimiter)
+        
+        try:
+            allkeys.remove(key)
+        except:
+            pass
 
-    # def delete_user(self, userid):
-    #     self._cache.pop(userid, None)
+    def get(self, key, **kwargs):
+        kwargs['key'] = key
+        cachekey = self.get_cachekey(**kwargs)
+        return djangocache.get(cachekey)
 
-    # def delete_category(self, userid, category):
-    #     try:
-    #         self._cache[userid].pop(category, None)
-    #     except:
-    #         print('Bestond al niet')
+    def set(self, key, value, timeout=None, **kwargs):
+        kwargs['key'] = key
+        cachekey = self.get_cachekey(**kwargs)
+        self.add_key(cachekey)
+        djangocache.set(cachekey, value, timeout)
 
-    # def delete_key(self, userid, category, key):
-    #     try:
-    #         self._cache[userid][category].pop(key, None)
-    #     except:
-    #         print('Bestond al niet')
-
+    def delete(self, key, **kwargs):
+        kwargs['key'] = key
+        cachekey = self.get_cachekey(**kwargs)
+        self.delete_key(cachekey)
+        djangocache.delete(cachekey)
+    
 
 
 cache = Cache()

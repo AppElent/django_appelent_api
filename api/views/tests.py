@@ -3,15 +3,20 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
 from ..serializers import Test1Serializer
+from ..modules.cache import cache
+from django.core.cache.backends import locmem
 
 @api_view(['GET', 'POST'])
 def test1(request):
     """
     Simple test
     """
+    cache.set('foo', 'bar', 3000)
     data = {
         "test": True
     }
+    print(cache.get('foo'))
+    print(1, locmem)
     return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST'])
