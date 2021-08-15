@@ -1,7 +1,7 @@
-import os
-import importlib
+# import os
+# import importlib
 
-__globals = globals()
+# __globals = globals()
 
 #from .serializers import *
 from .EventSerializer import EventSerializer
@@ -10,6 +10,7 @@ from .OauthProviderSerializer import OauthProviderSerializer
 from .OAuth2TokenSerializer import OAuth2TokenSerializer
 from .Test1Serializer import Test1Serializer
 from .PushoverSerializer import PushoverSerializer
+from .CacheSerializer import CacheSerializer
 
 # for file in os.listdir(os.path.dirname(__file__)):
 #     mod_name = file[:-3]   # strip .py at the end

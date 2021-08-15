@@ -4,14 +4,14 @@ from rest_framework.decorators import action
 from rest_framework import status, viewsets
 from ..permissions import IsAdmin
 from ..modules.cache import cache
-from ..serializers import Test1Serializer
+from ..serializers import CacheSerializer
 
 class CacheRequest(viewsets.GenericViewSet):
-    """ 
+    """
     Class to imcorporate method to make a Cache request
     """
     permission_classes = [IsAdmin]
-    serializer_class = Test1Serializer
+    serializer_class = CacheSerializer
 
     def get_queryset(self):
         return None
@@ -20,15 +20,17 @@ class Cache(CacheRequest):
     """
     Get Cache
     """
-
+    """
+    List all cache keys
+    """
     def list(self, request):
         return Response(cache.get_keys(), status=status.HTTP_200_OK)
     
-    def retrieve(self, request, pk, format=None):
+    def retrieve(self, request, pk):
         return Response(cache.get(pk), status=status.HTTP_200_OK)
 
     def create(self, request):
-        cache.set(request.data['key'], request.data['value'])
+        cache.set(request.data['key'], request.data['value'], int(request.data['timeout']) if request.data['timeout'] else None)
         return Response(status.HTTP_201_CREATED)
     
     def update(self, request, pk=None):
@@ -40,7 +42,7 @@ class Cache(CacheRequest):
         return Response(status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'])
-    def listdetails(self, request, pk=None, format=None):
+    def listdetails(self, request):
         allkeys = cache.get_keys()
         array = []
         deleted = []
