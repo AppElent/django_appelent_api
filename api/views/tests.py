@@ -10,7 +10,11 @@ def test1(request):
     """
     Simple test
     """
-    cache.set('foo', 'bar', 3000)
+    cache.set('foo', '1 minute', 60)
+    cache.set('foo2', '2 minutes', 120)
+    cache.set('foo3', '10 seconds', 10)
+    cache.set('foo4', '20 seconds', 20)
+    cache.set('foo5', 'asd', 120)
     data = {
         "test": True,
         "foo": cache.get('foo')

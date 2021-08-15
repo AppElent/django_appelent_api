@@ -8,7 +8,7 @@ import requests
 
 class SolarEdgeRequest(viewsets.GenericViewSet):
     """ 
-    Class to imcorporate method to make a request 
+    Class to imcorporate method to make a request
     """
     serializer_class = Test1Serializer
 

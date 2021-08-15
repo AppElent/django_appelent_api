@@ -28,6 +28,10 @@ class Cache():
     
     delimiter = '~~~'
 
+    def get_keys(self, **kwargs):
+        allkeys = djangocache.get('allkeys', default='')
+        return allkeys.split(self.delimiter)
+
     def add_key(self, key, **kwargs):
         allkeys = djangocache.get('allkeys', default='')
         allkeys = allkeys.split(self.delimiter)
@@ -46,6 +50,18 @@ class Cache():
             djangocache.set('allkeys', allkeys)
         except:
             pass
+    
+    def delete_keys(self, keys, **kwargs):
+        allkeys = djangocache.get('allkeys', default='')
+        allkeys = allkeys.split(self.delimiter)
+
+        for key in keys:
+            try:
+                allkeys.remove(key)
+            except:
+                pass
+        allkeys = self.delimiter.join(allkeys)
+        djangocache.set('allkeys', allkeys)
 
 
     def get(self, key, **kwargs):

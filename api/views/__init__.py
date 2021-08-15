@@ -14,6 +14,7 @@ from .SolarEdge import *
 from .Oauth import *
 from .Pushover import *
 from .tests import *
+from .Cache import *
 
 # for file in os.listdir(os.path.dirname(__file__)):
 #     mod_name = file[:-3]   # strip .py at the end

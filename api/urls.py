@@ -20,6 +20,7 @@ router.register('tado/home', TadoHome, basename='tado-homes')
 router.register('enelogic/buildings', EnelogicBuilding, basename='enelogic-buildings')
 router.register('solaredge/sites', SolarEdgeSite, basename='solaredge-sites')
 router.register('pushover', PushoverRequest, basename='pushover-request')
+router.register('cache', Cache, basename='cache')
 
 urlpatterns = [
     path('', include(router.urls)),
