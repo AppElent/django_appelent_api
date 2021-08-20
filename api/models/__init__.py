@@ -8,7 +8,6 @@ from .Meterstand import Meterstand
 from .OauthProvider import OauthProvider
 from .OAuth2Token import OAuth2Token
 from .TestModel import TestModel
-from .Oauth2State import Oauth2State
 
 # for file in os.listdir(os.path.dirname(__file__)):
 #     mod_name = file[:-3]   # strip .py at the end

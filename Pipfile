@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-python-memcached = "*"
 
 [packages]
 django = "*"
@@ -30,7 +29,7 @@ python-dateutil = "*"
 firebase-admin = "*"
 django-cors-headers = "*"
 requests-oauthlib = "*"
-pylibmc="*"
+django-redis = "*"
 
 [requires]
 python_version = "3.8"

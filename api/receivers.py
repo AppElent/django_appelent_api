@@ -1,8 +1,8 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
-from .models import OAuth2Token, Oauth2State
+from django.core.cache import cache
+from .models import OAuth2Token
 from .modules.oauth import oauth
-from .modules.cache import cache
 
 @receiver(post_save, dispatch_uid="test_receiver")
 def test(**kwargs):
@@ -22,7 +22,3 @@ def token_deleted(sender, instance, **kwargs):
     cache.delete(userid=instance.user.id, category=instance.name)
     cache.delete(userid=instance.user.id, category='tokens', key=instance.name)
     print(cache._cache)
-
-@receiver(post_save, sender=Oauth2State, dispatch_uid="save_oauth_state")
-def state_saved(sender, instance, **kwargs):
-    cache.set('tokens', instance)

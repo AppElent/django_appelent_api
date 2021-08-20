@@ -1,7 +1,10 @@
 #from .encryption import encrypt_message, decrypt_message, generate_key
 #key = generate_key()
 from django.core.cache import cache as djangocache
+from django_redis import get_redis_connection
+con = get_redis_connection("default")
 
+djangocache.get_keys = "hallo"
 
 class Cache():
 
@@ -66,6 +69,8 @@ class Cache():
 
     def get(self, key, **kwargs):
         kwargs['key'] = key
+        if key == "all":
+            return djangocache.get('*')
         cachekey = self.get_cachekey(**kwargs)
         return djangocache.get(cachekey)
 

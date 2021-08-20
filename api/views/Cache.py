@@ -1,10 +1,11 @@
-from api.serializers import Test1Serializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status, viewsets
 from ..permissions import IsAdmin
-from ..modules.cache import cache
+#from ..modules.cache import cache
+from django.core.cache import cache
 from ..serializers import CacheSerializer
+from api.serializers import Test1Serializer
 
 class CacheRequest(viewsets.GenericViewSet):
     """
@@ -24,7 +25,8 @@ class Cache(CacheRequest):
     List all cache keys
     """
     def list(self, request):
-        return Response(cache.get_keys(), status=status.HTTP_200_OK)
+        return Response(cache.keys("*"), status=status.HTTP_200_OK)
+        #return Response(cache.get_keys(), status=status.HTTP_200_OK)
     
     def retrieve(self, request, pk):
         return Response(cache.get(pk), status=status.HTTP_200_OK)
@@ -43,9 +45,8 @@ class Cache(CacheRequest):
 
     @action(detail=False, methods=['get'])
     def listdetails(self, request):
-        allkeys = cache.get_keys()
+        allkeys = cache.keys("*")
         array = []
-        deleted = []
         for key in allkeys:
             try:
                 value = cache.get(key)
@@ -56,9 +57,7 @@ class Cache(CacheRequest):
                     }
                     array.append(dicti)
             except:
-                deleted.append(key)
-        if len(deleted) > 0:
-            cache.delete_keys(deleted)
+                pass
 
         return Response(array, status=status.HTTP_204_NO_CONTENT)
 

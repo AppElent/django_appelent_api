@@ -1,4 +1,4 @@
-from ..models import OauthProvider, OAuth2Token, Oauth2State
+from ..models import OauthProvider, OAuth2Token
 from ..serializers import OAuth2TokenSerializer
 from requests_oauthlib import OAuth2Session
 from oauthlib.oauth2 import LegacyApplicationClient, WebApplicationClient
@@ -207,27 +207,6 @@ class Oauth():
         print('Token for ' + name + ' is updated from database')
         token = OAuth2Token.objects.get(user=user, name=name)
         self.update_token(token)
-
-    def get_state(self, name, state):
-        try:
-            result = self._states[name + '_' + state]
-            self._states.pop(name + '_' + state, None)
-            return result
-        except:
-            savedstate = Oauth2State.objects.filter(name=name, state=state).first()
-            if savedstate is None:
-                return None
-            savedstate.delete()
-            self._states.pop(name + '_' + state, None)
-            return savedstate.user
-            
-
-    def save_state(self, name, state):
-        stateobject = Oauth2State.objects.create()
-        stateobject.state = state
-        stateobject.name = name
-        stateobject.save()
-        self._states[name + '_' + state] = stateobject.user
 
 
 def register_providers():

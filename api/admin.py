@@ -20,4 +20,3 @@ class OAuth2TokenAdmin(admin.ModelAdmin):
 admin.site.register(Meterstand)
 admin.site.register(OauthProvider)
 admin.site.register(TestModel)
-admin.site.register(Oauth2State)

@@ -2,11 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status, viewsets
+from django.core.cache import cache
 from ..models import OAuth2Token
 from ..serializers import Test1Serializer
 from ..modules.oauth import oauth
 from PyTado.interface import Tado
-from ..modules.cache import cache
 
 class TadoRequest(viewsets.GenericViewSet):
     """ 
