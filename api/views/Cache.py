@@ -53,7 +53,8 @@ class Cache(CacheRequest):
                 if value is not None:
                     dicti = {
                         "key": key,
-                        "value": value
+                        "value": value,
+                        "ttl": cache.ttl(key)
                     }
                     array.append(dicti)
             except:

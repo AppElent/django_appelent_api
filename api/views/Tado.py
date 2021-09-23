@@ -17,20 +17,22 @@ class TadoRequest(viewsets.GenericViewSet):
 
     def get_client(self, request):
         key = 'tado_' + request.user.id
-        t = defaultcache.get(key)
+        t = cache.get(key)
         if not t:
             token = OAuth2Token.objects.get(user=request.user, name='tado')
             username = token.username
             password = token.password
             t = Tado(username, password)
-            defaultcache.set(key, t, 600)
+            cache.set(key, t, 600)
         return t
 
     def get_profile(self, request):
-        profile = cache.get(userid=request.user.id, category='tado', key='profile')
+        cachekey = f'userid#{request.user.id}:tado:profile'
+        profile = cache.get(cachekey)
         if not profile:
+            print('Profile niet gevonden')
             profile = self.get_data(request, '/v1/me').json()
-            cache.set(userid=request.user.id, category='tado', key='profile', value=profile)
+            cache.set(cachekey, value=profile)
         return profile
 
     def get_data(self, request, url, **kwargs):

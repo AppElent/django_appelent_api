@@ -14,7 +14,7 @@ def test1(request):
     cache.set('foo2', '2 minutes', 120)
     cache.set('foo3', '10 seconds', 10)
     cache.set('foo4', '20 seconds', 20)
-    cache.set('foo5', 'asd', 120)
+    cache.set('foo5', 'asd', None)
     data = {
         "test": True,
         "foo": cache.get('foo')

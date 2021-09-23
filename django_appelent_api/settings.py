@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'api.apps.ApiConfig',
     'users',
+    'satisfactory',
     'django_filters',
     'corsheaders',
 ]

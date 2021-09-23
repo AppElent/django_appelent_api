@@ -21,7 +21,7 @@ def authorize(request, name):
         return Response('Failed: ' + str(e), status=status.HTTP_412_PRECONDITION_FAILED)
 
     authorization_url, state = session.authorization_url()
-    cache.set('oauthstates.' + state, request.user.id, 120)
+    cache.set('oauthstates#' + state, request.user.id, 120)
     return HttpResponseRedirect(authorization_url)
 
 @api_view(['GET'])
@@ -34,7 +34,7 @@ def get_authorization_url(request, name):
         return Response('Failed: ' + str(e), status=status.HTTP_412_PRECONDITION_FAILED)
     
     authorization_url, state = session.authorization_url()
-    cache.set('oauthstates.' + state, request.user.id, 120)
+    cache.set('oauthstates#' + state, request.user.id, 120)
     return Response(authorization_url)
 
 @api_view(['GET', 'POST'])
@@ -43,12 +43,12 @@ def get_authorization_url(request, name):
 @renderer_classes([renderers.JSONRenderer])
 def save_access_token(request, name):
     urlstate = request.query_params.get('state')
-    user_id = cache.get('oauthstates.' + urlstate)
+    user_id = cache.get('oauthstates#' + urlstate)
     user = User.objects.get(id=user_id)
     if user is None:
         return Response('Saved state cannot be found', status=status.HTTP_400_BAD_REQUEST)
 
-    cache.delete('oauthstates.' + urlstate)
+    cache.delete('oauthstates#' + urlstate)
     try:
         session = oauth.get_session(name=name, user=user)
     except Exception as e:

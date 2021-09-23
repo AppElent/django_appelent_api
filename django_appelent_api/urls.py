@@ -53,6 +53,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # All API routes
     path('api/', include('api.urls')),
+    # All Satisfactory routes
+    path('satisfactory/', include('satisfactory.urls')),
     # Add browsable API login/logout views
     path('api-auth/', include('rest_framework.urls')),
     # Redirect empty to /api
